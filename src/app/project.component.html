@@ -1,0 +1,700 @@
+<div style="margin: auto; max-width: 1200px; z-index: 100; padding-bottom: 200px;">
+
+	<div *ngIf="project" class="col-md-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+
+
+		<div class="well no-padding"
+			style="min-height: 400px; margin-bottom: 20px; z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 2%;">
+
+
+
+			<div *ngIf="!project.cover_photo_edit">
+				<img *ngIf="project.cover_photo_s3_url" style="width: 100%; border-radius: 2% 2% 0% 0%;"
+					[src]="project.cover_photo_s3_url" />
+
+				<img *ngIf="!project.cover_photo_s3_url" style="width: 100%; border-radius: 2% 2% 0% 0%;"
+					src="assets/img/cover-default.png" />
+
+				<div *ngIf="project.project_started" class="well"
+					style="margin-bottom: 0px; width: 112px; position: absolute; left: 100%; transform: translateY(calc(-100% - 10px)) translateX(calc(-100% - 10px)); background-color:rgba(0, 0, 0, 0.35); border-radius: 8px; padding: 8px">
+					<h6 class="white pull-right" style="margin-bottom: 3px;">Projekti aloitettu</h6>
+					<h6 class="white pull-right" style="margin-bottom: 0px;">
+						{{ project.project_started | date:'dd.MM.yyyy' }}</h6>
+				</div>
+			</div>
+
+
+			<div *ngIf="project.cover_photo_edit" class="slim-new-project">
+				<slim [options]="slimOptionsCoverPhoto">
+					<input type="file" name="profilepicture">
+				</slim>
+			</div>
+
+
+
+
+
+
+
+
+
+			<div class="col-xs-4">
+
+				<div *ngIf="project.project_likes_allowed" class="well no-padding"
+					style="max-width: 100px; margin-bottom: 0px; margin-top: 10px; background-color:rgba(255, 255, 255, 0.5); border-radius: 10px;">
+
+
+					<p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5);"
+						(click)="add_like(); project.project_liked = true"
+						*ngIf="!project.project_liked && project.project_owner_id != communicationService.userData?.user_id && communicationService.userData"
+						class="btn btn-default  btn-circle btn-xs"><i
+							style="position: absolute; left: 5px; top: 8px; font-size: 18px;" class="fa fa-heart-o"></i>
+					</p>
+
+					<p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5);"
+						(click)="remove_like(); project.project_liked = false;"
+						*ngIf="project.project_liked && project.project_owner_id != communicationService.userData?.user_id && communicationService.userData"
+						class="btn btn-default  btn-circle btn-xs"><i
+							style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
+							class="fa fa-heart"></i>
+					</p>
+
+					<p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5); cursor: default;"
+						*ngIf="project.project_owner_id == communicationService.userData?.user_id || !communicationService.userData"
+						class="btn btn-default  btn-circle btn-xs"><i
+							style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
+							class="fa fa-heart"></i>
+					</p>
+
+
+					<h5 (click)="openProjectLikersDialog(project.likers)"
+						style="cursor: pointer; position: absolute; left: 44px; top: 11px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; display: inline-block;">
+						{{ project.like_count }}
+					</h5>
+				</div>
+
+			</div>
+
+
+			<div class="col-xs-4">
+				<p *ngIf="project.edit && !project.cover_photo_edit && !project.certificated_root_project"
+					style="text-align: center; color: #4374e0; cursor: pointer; margin-top: 10px;"
+					(click)="project.cover_photo_edit = true">Vaihda
+					projektin kansikuvaa</p>
+				<p *ngIf="project.edit && project.cover_photo_edit && !project.certificated_root_project"
+					style="text-align: center; color: #4374e0; cursor: pointer; margin-top: 10px;"
+					(click)="project.cover_photo_edit = false; project.slim_cover_photo = undefined">Näytä nykyinen
+					kansikuva
+				</p>
+			</div>
+
+
+			<div class="col-xs-4">
+
+				<a *ngIf="project.project_owner_id == communicationService.userData?.user_id"
+					style="margin-top: 10px; margin-bottom: 5px;" href="javascript:void(0);"
+					class="btn btn-default  btn-circle btn-sm pull-right" (click)="
+
+						project.edit = !project.edit;
+						project.name_edit = project.name;
+						project.description_edit = project.description;
+						project.goal_edit = project.goal;
+						project.numeric_goal_edit = project.numeric_goal;
+						project.step_goal_edit = project.step_goal;
+						project.numeric_goal_unit_edit = project.numeric_goal_unit;
+						project.step_ratings_edit = project.step_ratings;
+						project.status_edit = project.status;
+						project.project_likes_allowed_edit = project.project_likes_allowed;
+						project.step_likes_allowed_edit = project.step_likes_allowed;
+						project.time_limit_edit = project.time_limit;
+						project.time_limit_days_edit = project.time_limit_days;
+						project.step_comments_allowed_edit = project.step_comments_allowed;
+						project.category_edit = project.category;
+						project.order_number_edit = project.order_number;
+
+						"><i class="glyphicon glyphicon-edit"></i></a>
+
+			</div>
+
+			<div *ngIf="!project.edit || project.certificated_root_project">
+				<img routerLink="/u/{{project.project_owner_url_token}}" *ngIf="project.project_owner_avatar"
+					style="cursor: pointer; position: absolute; left: 40%; transform:translateY(-50%); border: 2px dashed #2dc3e8; width: 20%; border-radius: 50%;"
+					[src]="project.project_owner_avatar" />
+				<img routerLink="/u/{{project.project_owner_url_token}}" *ngIf="!project.project_owner_avatar"
+					style="cursor: pointer; position: absolute; left: 40%; transform:translateY(-50%); border: 2px dashed #2dc3e8; width: 20%; border-radius: 50%;"
+					src="assets/img/default.jpg" />
+			</div>
+			<div style="margin-bottom: calc(10% + 10px);"></div>
+
+			<div class="col-xs-12" style="padding-left: 30px; padding-right: 30px;">
+				<h3 *ngIf="!project.edit || project.certificated_root_project"
+					style="line-height: 26px; margin-top: 10px; font-weight: bold !important" align="center">
+					{{project.name}}
+				</h3>
+				<input *ngIf="project.edit && !project.certificated_root_project"
+					style="font-weight: bold; text-align: center;" type="text" [(ngModel)]="project.name_edit"
+					placeholder="Otsikko" class="form-control input-lg">
+			</div>
+
+			<div class="col-xs-12" style="padding-left: 30px; padding-right: 30px;">
+				<h5 *ngIf="!project.edit || project.certificated_root_project" align="center"
+					style="margin-bottom: 10px; line-height: 1.3;">{{ project.description }}</h5>
+				<textarea *ngIf="project.edit && !project.certificated_root_project" class="form-control input-lg"
+					id="form-field-8" [(ngModel)]="project.description_edit" placeholder="Tietoa projektista" rows="6"
+					style="resize: vertical; min-height: 100px; margin-top: 10px; margin-bottom: 20px; text-align: center;"></textarea>
+			</div>
+
+
+
+
+			<div *ngIf="project.edit && !project.certificated_root_project" class="col-xs-12"
+				style="margin-bottom: 20px; padding-left: 30px; padding-right: 30px">
+
+
+				<div class="well"
+					style="min-height: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px; margin-bottom: 0px;">
+
+
+					<h3 style="text-align: center; line-height: 26px; margin-top: 0px; margin-bottom: 20px; font-weight: 500 !important"
+						class="">
+						Projektin tavoitteet</h3>
+
+					<div class="row">
+
+
+						<div class="col-sm-4 col-xs-12">
+							<div class="col-xs-12" style="margin-bottom: 15px;">
+								<p style="margin-bottom: 4px;">Tavoite</p>
+								<mat-select [(value)]="project.goal_edit"
+									style="background-color:rgba(255, 255, 255, 1); border-radius: 5px; padding: 10px; font-weight: 300 !important; font-size: 18px; font-family: 'Open Sans', 'Segoe UI' ">
+									<mat-option value="no-goal">Avoin / Ei tavoitetta</mat-option>
+									<mat-option value="numeric">Numeerinen tavoite</mat-option>
+								</mat-select>
+							</div>
+						</div>
+
+
+						<div class="col-sm-8 col-xs-12">
+
+
+							<div *ngIf="project.goal_edit == 'numeric'" class="col-xs-12">
+
+								<div style="max-width: 200px; display: inline-block;">
+									<p style="margin-bottom: 4px;">Tavoitemäärä</p>
+									<input [(ngModel)]="project.numeric_goal_edit" type="number"
+										style="text-align: center; margin-bottom: 15px; margin-right: 10px;"
+										class="form-control input-lg">
+								</div>
+
+								<div style="max-width: 160px; display: inline-block;">
+									<p style="margin-bottom: 4px;">Yksikkö</p>
+									<mat-select [(value)]="project.numeric_goal_unit_edit"
+										style="background-color:rgba(255, 255, 255, 1); border-radius: 5px; padding: 10px; font-weight: 300 !important; font-size: 18px; font-family: 'Open Sans', 'Segoe UI' ">
+										<mat-option value="project_step">projektiaskel</mat-option>
+										<mat-option value="kpl">kpl</mat-option>
+										<mat-option value="km">km</mat-option>
+										<mat-option value="l">l</mat-option>
+										<mat-option value="h">h</mat-option>
+									</mat-select>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+					<div class="row" style="padding-left: 15px;" *ngIf="project.goal_edit == 'numeric'">
+
+						<hr>
+
+
+						<div class="col-sm-4 col-xs-12">
+							<div style="margin-bottom: 10px; margin-top: 10px;">
+								<mat-checkbox [(ngModel)]="project.time_limit_edit" mat-primary
+									class="arvostelu-kaytossa-checkbox" color="accent" style="margin-right: 10px;">
+								</mat-checkbox>
+								<p (click)="project.time_limit_edit = !project.time_limit_edit"
+									style="cursor: pointer; display: inline-block; font-weight: 300 !important; line-height: 24px !important; font-size: 18px !important; font-family: 'Open Sans', 'Segoe UI' !important">
+									Aikaraja</p>
+							</div>
+						</div>
+
+
+						<div class="col-sm-8 col-xs-12">
+
+							<div class="input-group" style="max-width: 200px;">
+								<input [(ngModel)]="project.time_limit_days_edit" type="number"
+									style="text-align: center;" class="form-control input-lg">
+								<span class="input-group-addon">päivää</span>
+							</div>
+
+						</div>
+
+					</div>
+
+
+
+
+
+
+
+
+
+				</div>
+			</div>
+
+
+
+
+
+
+
+			<div *ngIf="project.edit" class="col-xs-12"
+				style="margin-bottom: 20px; padding-left: 30px; padding-right: 30px">
+
+				<div class="well"
+					style="margin-bottom: 0px; min-height: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+
+					<h3 style="text-align: center; line-height: 26px; margin-top: 0px; margin-bottom: 20px; font-weight: 500 !important"
+						class="">
+						Asetukset</h3>
+
+					<div class="col-sm-12 col-xs-12">
+						<div style="margin-bottom: 10px;">
+							<mat-checkbox [(ngModel)]="project.step_ratings_edit" mat-primary
+								class="arvostelu-kaytossa-checkbox" color="accent" style="margin-right: 10px;">
+							</mat-checkbox>
+							<p (click)="project.step_ratings_edit = !project.step_ratings_edit"
+								style="cursor: pointer; display: inline-block; font-weight: 300 !important; line-height: 24px !important; font-size: 18px !important; font-family: 'Open Sans', 'Segoe UI' !important">
+								Askeleiden arvostelu käytössä</p>
+						</div>
+					</div>
+
+					<div class="row"></div>
+
+				</div>
+			</div>
+
+
+
+			<div *ngIf="project.edit" class="col-xs-12"
+				style="margin-bottom: 20px; padding-left: 30px; padding-right: 30px">
+
+				<div class="well"
+					style="margin-bottom: 0px; min-height: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+
+					<h3 style="text-align: center; line-height: 26px; margin-top: 0px; margin-bottom: 20px; font-weight: 500 !important"
+						class="">
+						Tykkäykset & kommentointi</h3>
+
+					<div class="col-sm-6 col-xs-12">
+						<div style="margin-bottom: 10px;">
+							<mat-checkbox [(ngModel)]="project.project_likes_allowed_edit" mat-primary
+								class="arvostelu-kaytossa-checkbox" color="accent" style="margin-right: 10px;">
+							</mat-checkbox>
+							<p (click)="project.project_likes_allowed_edit = !project.project_likes_allowed_edit"
+								style="cursor: pointer; display: inline-block; font-weight: 300 !important; line-height: 24px !important; font-size: 18px !important; font-family: 'Open Sans', 'Segoe UI' !important">
+								Salli projektista tykkääminen</p>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-xs-12">
+						<div style="margin-bottom: 10px;">
+							<mat-checkbox [(ngModel)]="project.step_likes_allowed_edit" mat-primary
+								class="arvostelu-kaytossa-checkbox" color="accent" style="margin-right: 10px;">
+							</mat-checkbox>
+							<p (click)="project.step_likes_allowed_edit = !project.step_likes_allowed_edit"
+								style="cursor: pointer; display: inline-block; font-weight: 300 !important; line-height: 24px !important; font-size: 18px !important; font-family: 'Open Sans', 'Segoe UI' !important">
+								Salli askelista tykkääminen</p>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-xs-12">
+						<div style="margin-bottom: 10px;">
+							<mat-checkbox [(ngModel)]="project.step_comments_allowed_edit" mat-primary
+								class="arvostelu-kaytossa-checkbox" color="accent" style="margin-right: 10px;">
+							</mat-checkbox>
+							<p (click)="project.step_comments_allowed_edit = !project.step_comments_allowed_edit"
+								style="cursor: pointer; display: inline-block; font-weight: 300 !important; line-height: 24px !important; font-size: 18px !important; font-family: 'Open Sans', 'Segoe UI' !important">
+								Salli askelten kommentointi</p>
+						</div>
+					</div>
+
+					<div class="row"></div>
+
+				</div>
+			</div>
+
+
+
+			<div *ngIf="project.edit && communicationService.userData.admin" class="col-xs-12"
+				style="margin-bottom: 20px; padding-left: 30px; padding-right: 30px">
+
+				<div class="well"
+					style="margin-bottom: 0px; min-height: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+
+					<h3
+						style="text-align: center; line-height: 26px; margin-top: 0px; margin-bottom: 20px; font-weight: 500 !important">
+						Sertifiointi</h3>
+
+					<div class="col-sm-6 col-xs-12">
+						<div style="margin-bottom: 10px;">
+							<mat-checkbox [(ngModel)]="project.certificated_project_edit" mat-primary
+								class="arvostelu-kaytossa-checkbox" color="accent" style="margin-right: 10px;">
+							</mat-checkbox>
+							<p (click)="editProjectLikesAllowed = !editProjectLikesAllowed"
+								style="cursor: pointer; display: inline-block; font-weight: 300 !important; line-height: 24px !important; font-size: 18px !important; font-family: 'Open Sans', 'Segoe UI' !important">
+								Sertifiointi</p>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-xs-12">
+						<div class="input-group" style="max-width: 400px;">
+							<input [(ngModel)]="project.order_number_edit" type="number" style="text-align: center;"
+								class="form-control input-lg">
+							<span class="input-group-addon">järjestysnumero</span>
+						</div>
+					</div>
+
+
+					<div class="col-xs-12">
+						<input style="text-align: center; margin-top: 10px;" type="text"
+							[(ngModel)]="project.category_edit" placeholder="Kategoria" class="form-control input-lg">
+					</div>
+
+
+					<div class="row"></div>
+
+				</div>
+			</div>
+
+
+
+
+
+
+			<div *ngIf="project.edit" class="col-xs-12"
+				style="margin-bottom: 20px; padding-left: 30px; padding-right: 30px;">
+
+				<div class="well "
+					style="margin-bottom: 0px;  min-height: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+
+					<h3 align="center"
+						style="line-height: 26px; margin-top: 0px; margin-bottom: 20px; font-weight: 500 !important"
+						class="">
+						Projektin status</h3>
+
+
+					<mat-radio-group [(ngModel)]="project.status_edit">
+
+						<div class="col-sm-4 col-xs-12">
+
+							<div align="center">
+								<mat-radio-button class="example-radio-button" [value]="'active'">
+									Aktiivinen
+								</mat-radio-button>
+							</div>
+						</div>
+
+						<div class="col-sm-4 col-xs-12">
+							<div align="center">
+								<mat-radio-button class="example-radio-button" [value]="'cancelled'">
+									Keskeytynyt
+								</mat-radio-button>
+							</div>
+						</div>
+
+						<div class="col-sm-4 col-xs-12">
+							<div align="center">
+								<mat-radio-button class="example-radio-button" [value]="'ready'">
+									Valmis
+								</mat-radio-button>
+							</div>
+						</div>
+
+
+
+					</mat-radio-group>
+
+					<div class="row"></div>
+
+				</div>
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<div class="col-xs-12" style="margin-bottom: 30px; padding-left: 30px; padding-right: 30px;">
+				<button *ngIf="project.edit" (click)="deleteProjectConfirm = !deleteProjectConfirm"
+					class="btn btn-danger">Poista</button>
+				<button *ngIf="project.edit" (click)="save_edited_project()"
+					class="btn btn-blue pull-right">Tallenna</button>
+			</div>
+
+
+			<div class="col-xs-12">
+				<div *ngIf="deleteProjectConfirm" class="well" style="margin-top: 30px;">
+					<div class="col-xs-12">
+						<h5 style="margin-bottom: 20px;">Oletko varma, että haluat poistaa tämän projektin ja kaikki
+							siihen
+							liitetyt tiedot? Toimintoa ei voi perua.</h5>
+					</div>
+
+					<div class="col-xs-12">
+						<button (click)="delete_project()" class="btn btn-danger">Poista projekti</button>
+					</div>
+
+					<div class="row"></div>
+				</div>
+			</div>
+
+
+
+
+
+			<div *ngIf="project.goal == 'numeric'" class="col-xs-12"
+				style="height: 0px; margin-top: 25px; width: 100%;">
+
+				<div class="well"
+					style="margin: 0; position: absolute; transform:translateY(calc(-100% - 5px)); left: 30px; background-color:rgba(255, 255, 255, 0.7); border-radius: 8px; padding: 8px 12px 8px 12px;">
+					<h5 *ngIf="project.numeric_goal_unit != 'project_step'" style="margin-bottom: 3px;">
+						{{ project.numeric_total | number : '1.0-1' }} /
+						{{ project.numeric_goal | number : '1.0-1' }}
+						{{project?.numeric_goal_unit }}</h5>
+					<h5 *ngIf="project.numeric_goal_unit == 'project_step'" style="margin-bottom: 3px;">
+						{{ project.step_count }} / {{ project.numeric_goal }} askelta otettu</h5>
+					<div class="row"></div>
+				</div>
+
+				<div class="well"
+					style="margin: 0; position: absolute; left: calc(100% - 30px); transform:translateY(calc(-100% - 5px)) translateX(-100%); background-color:rgba(255, 255, 255, 0.7); border-radius: 8px; padding: 8px 12px 8px 12px;">
+					<h5 *ngIf="project.numeric_goal_unit != 'project_step'" align="center"
+						style=" white-space: nowrap; margin-bottom: 3px;">
+						{{ project.numeric_percentage | number : '1.0-1' }} %
+					</h5>
+					<h5 *ngIf="project.numeric_goal_unit == 'project_step'" align="center"
+						style=" white-space: nowrap; margin-bottom: 3px;">
+						{{ project.step_percentage | number : '1.0-1' }} %</h5>
+					<div class="row"></div>
+				</div>
+
+			</div>
+
+
+
+			<div *ngIf="project.goal == 'numeric'" class="col-xs-12"
+				style="margin-bottom: 0px; padding-left: 30px; padding-right: 30px;">
+				<div class="progress progress-striped progress-sm progress-bordered"
+					style="background-color:rgba(255, 255, 255, 0.5); margin-bottom: 5px;">
+					<div *ngIf="project.goal == 'numeric' && project.numeric_goal_unit != 'project_step'"
+						class="progress-bar progress-bar-info" role="progressbar"
+						[style.width]="project.numeric_percentage + '%'"></div>
+					<div *ngIf="project.goal == 'numeric' && project.numeric_goal_unit == 'project_step'"
+						class="progress-bar progress-bar-info" role="progressbar"
+						[style.width]="project.step_percentage + '%'">
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="project.time_limit && project.time_limit_days" class="col-xs-12"
+				style="margin-bottom: 0px; padding-left: 30px; padding-right: 30px;">
+				<div class="progress progress-xxs"
+					style="background-color:rgba(255, 255, 255, 0.5); margin-bottom: 5px;">
+					<div class="progress-bar progress-bar-info" role="progressbar"
+						[style.width]="project.days_passed_percentage + '%'"></div>
+				</div>
+				<h5 style="text-align: right; margin-top: 3px; font-size: 10px; margin-bottom: 3px;">
+
+					<ng-container *ngIf="project.time_limit_days - project.days_passed >= 0">
+						Projektia jäljellä {{project.time_limit_days - project.days_passed}} päivää
+					</ng-container>
+
+					<ng-container *ngIf="project.time_limit_days - project.days_passed < 0">
+						Projekti on päättynyt {{(project.time_limit_days - project.days_passed) * -1}} päivää
+						sitten.
+					</ng-container>
+
+
+				</h5>
+			</div>
+
+
+			<div class="col-xs-12" style="margin-bottom: 10px;"></div>
+			<div style="width: 100%" class="row"></div>
+
+
+		</div>
+
+
+
+
+
+
+
+
+
+		<div (click)="addNewStepDialog = true"
+			*ngIf="project.project_owner_id == communicationService.userData?.user_id && !addNewStepDialog"
+			class="well no-padding"
+			style="cursor: pointer; z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+			<h3 style="padding-top: 5px; font-weight: bold !important; text-align: center;">Lisää uusi askel</h3>
+			<div class="row"></div>
+		</div>
+
+
+
+		<div *ngIf="addNewStepDialog" class="well"
+			style="z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+
+			<div class="col-xs-12">
+				<h3 style="margin-bottom: 25px; font-weight: bold !important; text-align: center;">Uuden askeleen lisäys
+				</h3>
+			</div>
+
+			<div class="col-sm-3 col-xs-12">
+
+				<label for="lginput" style="margin-bottom:3px;">Todistekuva</label>
+				<div class="slim-project-step-proof" style="margin-bottom: 10px;">
+					<slim [options]="slimOptions">
+						<input type="file" name="profilepicture">
+					</slim>
+				</div>
+
+			</div>
+
+			<div class="col-sm-9 col-xs-12">
+
+
+				<div *ngIf="project.goal == 'numeric' && project.numeric_goal_unit != 'project_step'"
+					class="col-sm-6 no-padding">
+					<div style="margin-bottom: 10px;">
+						<div style="max-width: 250px">
+							<p style="margin-bottom: 3px">Suorite</p>
+							<div class="input-group">
+								<input [(ngModel)]="newStep.numeric_value" type="number" style="text-align: center;"
+									class="form-control input-lg">
+								<span class="input-group-addon">{{ project.numeric_goal_unit }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div *ngIf="project.step_ratings" class="col-sm-6 no-padding">
+
+					<p style="margin-bottom: 4px">Arvostelu</p>
+					<div class="well"
+						style="text-align: center; margin-bottom: 10px; padding-top: 7px; padding-bottom: 5px; width: 200px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
+
+						<star-rating (starClickChange)="newStep.rating = $event.rating" [staticColor]="'positive'"
+							[size]="'medium'" [hoverEnabled]="true" [starType]="'svg'"></star-rating>
+					</div>
+				</div>
+
+				<div class="row"></div>
+
+
+
+
+				<div class="form-group">
+					<label for="lginput" style="margin-bottom:3px;">Otsikko</label>
+					<input type="text" [(ngModel)]="newStep.topic" placeholder="Otsikko" style="font-weight: bold;"
+						class="form-control input-lg">
+
+				</div>
+
+
+				<label for="lginput" style="margin-bottom:3px;">Kuvaus</label>
+				<textarea [(ngModel)]="newStep.description" class="form-control input-lg" rows="6"
+					style="resize: vertical; min-height: 100px;" id="form-field-8" placeholder="Kuvaus"></textarea>
+
+				<button [disabled]="!newStepImageAdded || !newStep.topic || ongoingPost" (click)="save_new_step()"
+					style="margin-top: 20px;" class="btn btn-blue pull-right"><span><i *ngIf="ongoingPost"
+							class='fa fa-spinner fa-spin fa-fw'></i> Tallenna</span></button>
+
+			</div>
+			<div class="row"></div>
+
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div class="well" *ngIf="project.steps.length > 0"
+			style="z-index: 5; background-color:rgba(255, 255, 255, 0.3); border-radius: 5px;">
+
+			<div class="row" style="margin-bottom: 20px;">
+				<div class="col-sm-9 hidden-xs">
+				</div>
+
+				<div class="col-sm-3 col-xs-12">
+					<div style="width: 100%;">
+						<span class="input-icon">
+							<input [(ngModel)]="searchTerm"
+								style="border-radius: 5px !important; background-color:rgba(255, 255, 255, 1); border: 0px;"
+								type="text" class="form-control input-md" placeholder="Hae">
+							<i class="glyphicon glyphicon-search blue"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+
+			<div *ngFor="let step of project.steps | slice:0:stepsToShow; let i = index">
+				<app-step-component *ngIf="!selectedStep || selectedStep == step.id"
+					(openStepLikers)="openStepLikersDialog($event)" (openImagePopUp)="openPopUpImageDialog($event)"
+					(refreshProjectData)="getProjectData()" [project]="project" [step]="step"
+					[selectedStep]="selectedStep">
+				</app-step-component>
+			</div>
+
+
+
+
+			<h4 style="text-align: center; margin-top: 30px; user-select: none; cursor: pointer;"
+				*ngIf="project.step_count > stepsToShow && !selectedStep"
+				(click)="stepsToShow = stepsToShow + 10; getProjectData();">Näytä lisää</h4>
+
+			<h4 style="text-align: center; margin-top: 30px; user-select: none; cursor: pointer;" *ngIf="selectedStep"
+				[routerLink]="'/p/' + urlToken" (click)="selectedStep = null;">Näytä kaikki askeleet</h4>
+
+
+
+			<div class="row"></div>
+		</div>
+
+
+
+
+
+
+	</div>
+
+</div>

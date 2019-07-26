@@ -1,0 +1,71 @@
+<div class="default-data-container">
+
+    <div class="col-md-12 col-xs-12 no-padding">
+
+        <div class="well default-well">
+
+
+            <div class="row" style="margin: 0 0 40px 0">
+
+                <div class="col-sm-4">
+                    <p style="margin-bottom: 2px;">Näytettävät projektit</p>
+                    <mat-select [(ngModel)]="communicationService.allProjectsParams.projectsToShow" class="filter-box"
+                        (ngModelChange)="get_all_projects()">
+                        <mat-option value="all">Kaikki</mat-option>
+                        <mat-option value="active">Aktiiviset</mat-option>
+                        <mat-option value="ready">Valmistuneet</mat-option>
+                        <mat-option value="cancelled">Keskeytyneet</mat-option>
+                    </mat-select>
+                </div>
+
+                <div class="col-sm-4">
+                    <p style="margin-bottom: 2px;">Järjestys</p>
+                    <mat-select [(ngModel)]="communicationService.allProjectsParams.order"
+                        (ngModelChange)="get_all_projects()" class="filter-box">
+                        <mat-option value="-latest_step_taken">Viimeksi päivitetyt</mat-option>
+                        <mat-option value="-first_step_taken">Uusimmat projektit</mat-option>
+                        <mat-option value="-like_count">Tykätyimmät projektit</mat-option>
+                        <mat-option value="-step_count">Eniten askelia</mat-option>
+                    </mat-select>
+                </div>
+
+                <div class="col-sm-4">
+                    <p style="margin-bottom: 2px;">Haku</p>
+                    <span class="input-icon">
+                        <input id="search-box" class="form-control input-lg filter-box"
+                            style="border-radius: 5px !important;" type="text">
+                        <i class="glyphicon glyphicon-search blue"></i>
+                    </span>
+                </div>
+
+            </div>
+
+
+
+            <div class="row" style="margin: 0">
+                <div *ngFor="let project of communicationService.allProjectsList">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                        <app-project-link [project]="project"></app-project-link>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="row" style="margin:0">
+                <div class="col-xs-12"
+                    *ngIf="communicationService.allProjectsParams.projectsToShowCount < communicationService.matchingProjectCount">
+                    <div style="text-align: center; margin-bottom: 30px; margin-top: 20px;"
+                        (click)="communicationService.allProjectsParams.projectsToShowCount = communicationService.allProjectsParams.projectsToShowCount + 20; get_all_projects();">
+                        <h4 style="cursor: pointer;">Näytä lisää projekteja</h4>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

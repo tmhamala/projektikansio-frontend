@@ -1,0 +1,199 @@
+<div *ngIf="communicationService.userData" style="margin: auto; max-width:1200px; z-index: 100;">
+
+    <div class="col-md-12 col-xs-12" style="padding-left: 0; padding-right: 0px;">
+
+        <div class="well" style="min-height: 600px; z-index: 5; background-color:rgba(255, 255, 255, 0.7);">
+
+            <div class="row"></div>
+
+            <h3 style="margin-bottom: 20px; text-align: center;">Käyttäjätiedot -
+                {{communicationService.userData.username}}</h3>
+
+            <div class="col-xs-12 col-md-6">
+                <div style="text-align: center;">
+
+                    <div class="slim-profile-avatar">
+                        <slim *ngIf="imageEdit" [options]="slimOptions">
+                            <input type="file" name="profilepicture">
+                        </slim>
+                    </div>
+
+                    <img *ngIf="communicationService.userData.avatar_s3_url && !imageEdit" (click)="imageEdit = true;"
+                        style="border: 2px dashed #2dc3e8; width: 70%; border-radius: 50%; margin-bottom: 22px;"
+                        [src]="communicationService.userData.avatar_s3_url" />
+
+                    <img *ngIf="!communicationService.userData.avatar_s3_url && !imageEdit" (click)="imageEdit = true;"
+                        style="border: 2px dashed #2dc3e8; width: 70%; border-radius: 50%; margin-bottom: 22px;"
+                        src="assets/img/default.jpg" />
+
+                    <div style="margin-top: 8px;">
+                        <button *ngIf="imageEdit" (click)="imageEdit = false;" class="btn btn-palegreen btn-xs"
+                            style="opacity: 0.90; min-width: 30%">Show current picture</button>
+                        <button *ngIf="imageEdit" (click)="remove_avatar()" class="btn btn-warning btn-xs"
+                            style="opacity: 0.90; min-width:30%;">Remove avatar</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="col-xs-12 col-md-6" style="padding: 0px;">
+                <div class="form-group">
+                    <label for="lginput" style="margin-bottom:3px;">Näytettävä nimi</label>
+                    <span class="input-icon icon-right">
+                        <input type="text" (change)="save_profiledata()"
+                            [(ngModel)]="communicationService.userData.name" placeholder="Näytettävä nimi"
+                            class="form-control input-lg">
+                        <i class="fa fa-user blue circular"></i>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="lginput" style="margin-bottom:3px;">Sähköpostiosoite (ei näytetä muille - vain salasanan
+                        palauttamista
+                        varten)</label>
+                    <span class="input-icon icon-right">
+                        <input type="text" (change)="save_profiledata()"
+                            [(ngModel)]="communicationService.userData.email" placeholder="Sähköpostiosoite"
+                            class="form-control input-lg">
+                        <i class="fa fa-envelope blue circular"></i>
+                    </span>
+                </div>
+
+                <label for="lginput" style="margin-bottom:3px;">Vähän tietoa sinusta</label>
+                <textarea (change)="save_profiledata()" [(ngModel)]="communicationService.userData.info"
+                    class="form-control input-lg" rows="6" style="resize: vertical; min-height: 100px;"
+                    id="form-field-8" placeholder="Vähän tietoa sinusta"></textarea>
+
+
+            </div>
+
+            <div class="col-xs-12" style="padding: 0; margin-top: 60px;">
+                <button (click)="logout()" class="btn btn-blue pull-right">Kirjaudu ulos</button>
+                <button (click)="communicationService.showNotifications = true;" class="btn btn-warning pull-right"
+                    style="margin-right: 10px;">Näytä tapahtumat</button>
+                <button (click)="deleteAccountConfirm = !deleteAccountConfirm" class="btn btn-danger">Poista
+                    käyttäjätili</button>
+            </div>
+
+
+
+            <div class="col-xs-12">
+                <div *ngIf="deleteAccountConfirm" class="well" style="margin-top: 30px;">
+                    <div class="col-xs-12">
+                        <h5 style="margin-bottom: 20px;">Oletko varma, että haluat poistaa pysyvästi käyttäjätilin
+                            sekä kaikki
+                            projektisi? Toimintoa ei voi perua.</h5>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <input type="password" [(ngModel)]="deleteAccountPasswordConfirm"
+                            placeholder="Salasanavarmistus" class="form-control">
+                    </div>
+
+                    <div class="col-xs-6">
+                        <button [disabled]="!deleteAccountPasswordConfirm" (click)="delete_account()"
+                            class="btn btn-danger pull-right">Poista tili pysyvästi</button>
+                    </div>
+
+
+                    <div class="row"></div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="col-md-12 col-xs-12" style="padding-left: 0; padding-right: 0px;">
+
+        <div (click)="addNewProjectDialog = true" *ngIf="!addNewProjectDialog" class="well no-padding"
+            style="cursor: pointer; z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px;">
+            <h3 style="padding-top: 5px; font-weight: bold !important; text-align: center;">Aloita uusi projekti</h3>
+            <div class="row"></div>
+        </div>
+
+
+
+
+
+        <div *ngIf="addNewProjectDialog" class="well"
+            style="min-height: 400px; z-index: 5; background-color:rgba(255, 255, 255, 0.5);">
+            <h3 style="text-align: center;">Uuden projektin aloitus</h3>
+
+            <div style="text-align: center;">
+                <a *ngIf="!newProjectAddCoverPhoto" style="margin-top: 15px" (click)="newProjectAddCoverPhoto = true"
+                    class="btn btn-link">Lisää kansikuva
+                    projektille</a>
+            </div>
+
+            <div [hidden]="!newProjectAddCoverPhoto" style="margin-top: 10px;" class="slim-new-project">
+                <slim style="width: 70%" [options]="slimOptionsNewProjectCover">
+                    <input type="file" name="profilepicture">
+                </slim>
+            </div>
+
+
+            <input [(ngModel)]="newProjectName" type="text" maxlength="70"
+                style="text-align: center; font-weight: bold; margin-top: 10px;" placeholder="Projektin nimi"
+                class="form-control input-lg">
+
+
+
+
+
+
+            <textarea [(ngModel)]="newProjectDescription" class="form-control input-lg" rows="6"
+                style="text-align: center; resize: vertical; min-height: 100px; margin-top: 10px;" id="form-field-8"
+                placeholder="Tietoa projektista"></textarea>
+
+            <div style="width: 100%; text-align: center;">
+                <button style="margin-top: 15px" [disabled]="!newProjectName" (click)="start_new_project()"
+                    class="btn btn-blue btn-lg">Aloita projekti</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div *ngIf="communicationService.userData.projects" class="col-md-12 col-xs-12"
+        style="padding-left: 0; padding-right: 0px;">
+
+        <div *ngIf="communicationService.userData.projects.length > 0" class="well"
+            style="z-index: 5; background-color:rgba(255, 255, 255, 0.7);">
+            <h3 style="text-align: center;">Minun projektini</h3>
+
+
+            <div style="margin-bottom: 40px;" class="row"></div>
+
+
+            <div *ngFor="let project of communicationService.userData.projects">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <app-project-link [project]="project"></app-project-link>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+
+        </div>
+    </div>
+
+
+</div>

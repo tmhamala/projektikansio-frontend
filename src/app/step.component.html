@@ -1,0 +1,229 @@
+<div class="well"
+    style="z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 5px; padding-top: 10px; padding-bottom: 10px; margin-bottom: 20px;">
+
+
+    <div *ngIf="!fullView" (click)="fullView = true" style="cursor: pointer;">
+
+        <div class="col-sm-1 col-xs-2 no-padding" style="height: 100px">
+            <h3 class="project-short-text-number"
+                style="position: absolute; top: 50%; left: 50%; transform: translateY(-50%) translateX(-50%); font-family: 'Montserrat', sans-serif; font-size: 56px;">
+                <strong>{{step.index}}</strong></h3>
+        </div>
+
+        <div class="col-sm-3 hidden-xs">
+            <div style="margin-left: 5px; height: 100px; position: relative;">
+                <img *ngIf="step.proof_s3_url"
+                    style="position: absolute; top: 50%; transform: translate(0%, -50%); max-width: 100%; max-height: 100px; border-radius: 5px;"
+                    [src]="step.proof_s3_url" />
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-xs-10">
+
+            <div *ngIf="step.like_count > 0 || step.comments.length > 0" class="well"
+                style="margin: 0; position: absolute; right: 0px; top: 5px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px; padding: 4px 4px 4px 4px;">
+                <h5 align="center"
+                    style="white-space: nowrap; margin-bottom: 3px; font-size: 13px; font-weight: 500 !important; font-family: 'Montserrat', sans-serif;">
+                    <div style="margin-left: 3px; margin-right: 3px; display: inline-block;"
+                        *ngIf="step.like_count > 0"><i style="font-size: 12px; margin-top: 2px; color: #ff4081;"
+                            class="fa fa-heart-o"></i> {{ step.like_count }}</div>
+                    <div style="margin-left: 3px; margin-right: 3px; display: inline-block;"
+                        *ngIf="step.comments.length > 0"><i style="font-size: 12px; margin-top: 2px; color: #2dc3e8;"
+                            class="fa fa-comment-o"></i> {{step.comments.length}}</div>
+                </h5>
+                <div class="row"></div>
+            </div>
+
+            <h3 class="project-short-text-date" style="margin-bottom: 5px; margin-top: 10px;">
+                {{step.step_taken | date:'dd.MM.yyyy klo HH:mm'}}</h3>
+            <h3 class="project-short-text-topic" style="margin-bottom: 10px; font-weight: bold !important">
+                {{step.topic}}</h3>
+        </div>
+
+        <div class="row"></div>
+    </div>
+
+
+
+
+
+
+    <div *ngIf="fullView">
+
+
+        <div class="col-sm-4 col-xs-12 step-image-column">
+            <img (click)="fullView = false" *ngIf="step.proof_s3_url"
+                style="width: 100%; border-radius: 5px; margin-top: 9px; margin-bottom: 9px;"
+                [src]="step.proof_s3_url" />
+            <p class="hidden-xs" align="center" style="color: #4374e0; cursor: pointer;"
+                (click)="openImagePopUp.emit( step.proof_s3_url )">Näytä täysikokoisena</p>
+        </div>
+
+        <div class="col-sm-8 col-xs-12 step-data-column">
+
+            <div class="col-xs-6 step-data-column" style="margin-top: 9px;">
+                <h5 style="margin-bottom: 7px; font-weight: bold !important;">Askel nro. {{ step.index }}</h5>
+                <h6 style="margin-bottom: 5px;">{{step.step_taken | date:'dd.MM.yyyy klo HH:mm'}}</h6>
+                <h6
+                    *ngIf="project.goal == 'numeric' && step.numeric_value && project.numeric_goal_unit !='project_step'">
+                    Suorite: <strong>{{ step.numeric_value }} {{ project.numeric_goal_unit }}</strong></h6>
+
+                <div *ngIf="project?.step_ratings && step.rating" class="col-sm-6 no-padding">
+                    <div class="well read-only-ratings" align="center"
+                        style="cursor: default !important; margin-bottom: 0px; margin-top: 5px; padding-top: 4px; padding-bottom: 1px; width: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
+
+                        <star-rating [readOnly]="true" [staticColor]="'positive'" [size]="'medium'"
+                            [rating]="step.rating" [starType]="'svg'"></star-rating>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xs-6 step-data-column" style="margin-top: 9px;">
+                <div class="row"></div>
+                <a *ngIf="project.project_owner_id == communicationService.userData?.user_id"
+                    style="margin-bottom: 5px; margin-left: 10px;" href="javascript:void(0);"
+                    (click)="step.edit = !step.edit; step.topic_edit = step.topic; step.description_edit = step.description; step.numeric_value_edit = step.numeric_value; step.rating_edit = step.rating;"
+                    class="btn btn-default  btn-circle btn-sm pull-right"><i class="glyphicon glyphicon-edit"></i></a>
+
+                <div *ngIf="project?.step_likes_allowed" class="pull-right"
+                    style="margin-bottom: 0px; margin-top: 0px; background-color:rgba(255, 255, 255, 0.5); border-radius: 10px;">
+                    <p style="margin: 4px;  background-color:rgba(255, 255, 255, 0.5);"
+                        (click)="add_like(); step.step_liked = true"
+                        *ngIf="!step.step_liked && communicationService.userData && project?.project_owner_id != communicationService.userData.user_id"
+                        class="btn btn-default  btn-circle btn-xs"><i
+                            style="position: absolute; left: 5px; top: 8px; font-size: 18px;" class="fa fa-heart-o"></i>
+                    </p>
+                    <p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5);"
+                        (click)="remove_like(); step.step_liked = false;"
+                        *ngIf="step.step_liked && communicationService.userData && project?.project_owner_id != communicationService.userData.user_id"
+                        class="btn btn-default  btn-circle btn-xs"><i
+                            style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
+                            class="fa fa-heart"></i></p>
+                    <p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5); cursor: default;"
+                        *ngIf="!communicationService.userData || project?.project_owner_id == communicationService.userData.user_id"
+                        class="btn btn-default  btn-circle btn-xs"><i
+                            style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
+                            class="fa fa-heart"></i></p>
+                    <h5 *ngIf="step.like_count"
+                        (click)="openStepLikers.emit({'step_topic': step.topic, 'step_id': step.id, 'likers': step.likers})"
+                        style="cursor: pointer; margin-right: 15px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; display: inline-block;">
+                        {{ step.like_count }}</h5>
+                    <h5 *ngIf="!step.like_count"
+                        style="margin-right: 15px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; display: inline-block;">
+                        {{ step.like_count }}</h5>
+                </div>
+            </div>
+
+
+
+
+            <div *ngIf="!step.edit">
+                <div class="col-xs-12 step-data-column" style="margin-top: 25px;">
+                    <h3 style="margin-bottom: 25px; font-weight: bold !important; line-height: 26px;">{{step.topic}}
+                    </h3>
+                    <h5 style="white-space: pre-wrap; line-height: 1.2; margin-bottom: 25px;">{{step.description}}</h5>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+            <div *ngIf="step.edit">
+
+                <div class="col-xs-12 step-data-column" style="margin-top: 25px;">
+
+                    <div *ngIf="project.goal == 'numeric' && project.numeric_goal_unit != 'project_step'"
+                        class="col-sm-6 no-padding">
+                        <div style="margin-bottom: 10px;">
+                            <div style="max-width: 250px">
+                                <p style="margin-bottom: 3px">Suorite</p>
+                                <div class="input-group">
+                                    <input [(ngModel)]="step.numeric_value_edit" type="number"
+                                        style="text-align: center;" class="form-control input-lg">
+                                    <span class="input-group-addon">{{ project.numeric_goal_unit }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div *ngIf="project.step_ratings" class="col-sm-6 no-padding">
+
+                        <p style="margin-bottom: 4px">Arvostelu</p>
+                        <div class="well" align="center"
+                            style="margin-bottom: 10px; padding-top: 10px; padding-bottom: 7px; width: 200px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
+
+                            <star-rating (starClickChange)="step.rating_edit = $event.rating" [staticColor]="'positive'"
+                                [size]="'medium'" [rating]="0" [hoverEnabled]="true" [starType]="'svg'"></star-rating>
+
+                        </div>
+                    </div>
+
+
+                    <input style="font-weight: bold" type="text" [(ngModel)]="step.topic_edit" placeholder="Otsikko"
+                        class="form-control input-lg">
+
+                    <textarea [(ngModel)]="step.description_edit" class="form-control input-lg" rows="6"
+                        style="resize: vertical; min-height: 100px; margin-top: 10px;" placeholder="Kuvaus"></textarea>
+
+
+                    <button [class.disabled]="ongoingPost" (click)="step.deleteConfirm = true"
+                        style="margin-top: 30px; margin-bottom: 20px;" class="btn btn-danger">Poista</button>
+                    <button [class.disabled]="ongoingPost" (click)="save_edited_step()"
+                        style="margin-top: 30px; margin-bottom: 20px;" class="btn btn-blue pull-right"><span><i
+                                *ngIf="ongoingPost" class='fa fa-spinner fa-spin fa-fw'></i> Tallenna</span></button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        <div class="col-xs-12" *ngIf="step.deleteConfirm && step.edit">
+            <div class="well" style="margin-top: 30px;">
+
+                <div class="col-xs-12">
+                    <h5 style="margin-bottom: 20px;">Oletko varma, että haluat poistaa tämän askeleen? Toimintoa ei voi
+                        perua.</h5>
+                </div>
+
+                <div class="col-xs-12">
+                    <button [class.disabled]="!edit_step_response.data_loaded || !delete_step_response.data_loaded"
+                        (click)="delete_step(step.id)" class="btn btn-danger"><span><i
+                                *ngIf="!delete_step_response.data_loaded" class='fa fa-spinner fa-spin fa-fw'></i>
+                            Poista askel</span></button>
+                </div>
+
+                <div class="row"></div>
+            </div>
+        </div>
+
+
+
+
+
+        <div *ngIf="project.step_comments_allowed" class="col-xs-12 step-data-column">
+            <app-comment-section-component [step]="step" [projectOwnerId]="project.project_owner_id">
+            </app-comment-section-component>
+        </div>
+
+
+
+
+        <div class="row"></div>
+    </div>
+
+</div>
