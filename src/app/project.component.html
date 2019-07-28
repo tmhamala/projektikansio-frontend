@@ -643,7 +643,7 @@
 
 
 
-		<div class="well" *ngIf="project.steps.length > 0"
+		<div class="well"
 			style="z-index: 5; background-color:rgba(255, 255, 255, 0.3); border-radius: 5px;">
 
 			<div class="row" style="margin-bottom: 20px;">
@@ -653,7 +653,7 @@
 				<div class="col-sm-3 col-xs-12">
 					<div style="width: 100%;">
 						<span class="input-icon">
-							<input [(ngModel)]="searchTerm"
+							<input (input)="searchChanged($event.target.value)"
 								style="border-radius: 5px !important; background-color:rgba(255, 255, 255, 1); border: 0px;"
 								type="text" class="form-control input-md" placeholder="Hae">
 							<i class="glyphicon glyphicon-search blue"></i>

@@ -152,8 +152,8 @@ export class PasswordResetComponent implements OnInit {
         this.dataService.change_password(credetentials)
             .subscribe(data => {
                 this.changePasswordResponse = data;
-                if (this.changePasswordResponse.password_changed === true) {
-                    this.communicationService.userData = this.changePasswordResponse.login_data;
+                if (!data.error) {
+                    localStorage.auth_token = data.auth_token;
                     this.router.navigate(['/profile']);
                 }
 

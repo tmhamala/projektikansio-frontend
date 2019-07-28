@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
   selector: 'app-login-component',
   template: `
 
-<div class="page-body no-padding">
 
-    <div style="margin: auto; max-width:1200px; z-index: 100;">
+
+    <div class="default-data-container">
 
         <div class="col-md-12 col-xs-12" style="padding-left: 0; padding-right: 0px;">
 
-            <div class="well" style="min-height: 800px; z-index: 5; background-color:rgba(255, 255, 255, 0.7);">
+            <div class="well default-well">
 
 
                 <div class="row">
@@ -73,7 +73,7 @@ import { Router } from '@angular/router';
 
                                     <div class="well" style="max-width: 600px; margin-bottom: 5px;">
                                         <div>
-                                            Unohditko salasanasi? <div (click)="reset_password_dialog = !reset_password_dialog" style="color: #337ab7; cursor: pointer; display: inline-block;">Palauta salasana</div>
+                                            Unohditko salasanasi? <div (click)="resetPasswordDialog = !resetPasswordDialog" style="color: #337ab7; cursor: pointer; display: inline-block;">Palauta salasana</div>
                                         </div>
                                     </div>
 
@@ -85,7 +85,7 @@ import { Router } from '@angular/router';
                                             <input [(ngModel)]="email" type="text" class="form-control" placeholder="Sähköpostiosoiteesi">
                                         </div>
                                         <div class="col-sm-4 col-xs-12">
-                                            <button [class.disabled]="!email" (click)="reset_password(); reset_password_dialog = false;" class="btn btn-blue pull-right"> Palauta</button>
+                                            <button [class.disabled]="!email" (click)="reset_password(); resetPasswordDialog = false;" class="btn btn-blue pull-right"> Palauta</button>
                                         </div>
 
                                         </div>
@@ -108,7 +108,7 @@ import { Router } from '@angular/router';
             </div>
         </div>
     </div>
-</div>
+
 
 
 

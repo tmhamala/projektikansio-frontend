@@ -10,7 +10,6 @@ interface UserData {
     info?: string;
     notifications?: any[];
     new_notifications_count?: number;
-    avatar?: string;
     avatar_s3_url?: string;
     projects?: any[];
     admin?: boolean;

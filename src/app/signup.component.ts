@@ -10,13 +10,12 @@ import { CommunicationService } from './communication.service';
     selector: 'app-signup-component',
     template: `
 
-<div class="page-body no-padding">
 
-    <div style="margin: auto; max-width:1200px; z-index: 100;">
+    <div class="default-container">
 
-        <div class="col-md-12 col-xs-12" style="padding-left: 0; padding-right: 0px;">
+        <div class="col-md-12 col-xs-12 no-padding">
 
-            <div class="well" style="min-height: 800px; z-index: 5; background-color:rgba(255, 255, 255, 0.7);">
+            <div class="well default-well">
 
 
                 <div class="row">
@@ -70,7 +69,6 @@ import { CommunicationService } from './communication.service';
             </div>
         </div>
     </div>
-</div>
 
 
 

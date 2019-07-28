@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
     template: `
 
 
-  <div style="margin: auto; max-width:1200px; z-index: 100;">
+  <div style="default-data-container">
 
 
 

@@ -20,13 +20,10 @@ export class StepComponent implements OnInit {
 
     fullView = false;
 
-
     ongoingPost = false;
 
-
-
-
     constructor(public dataService: DataService, public communicationService: CommunicationService) {}
+
 
     ngOnInit() {
 
@@ -35,7 +32,6 @@ export class StepComponent implements OnInit {
         }
 
     }
-
 
 
 
@@ -89,6 +85,7 @@ export class StepComponent implements OnInit {
         .subscribe(data => {
             if (!data.error) {
                 this.step.likers = data.likers;
+                this.step.my_like_id = data.my_like_id;
             }
         });
 
@@ -101,7 +98,7 @@ export class StepComponent implements OnInit {
 
         this.step.like_count = this.step.like_count - 1;
 
-        this.dataService.remove_steplike(this.step.id)
+        this.dataService.remove_steplike(this.step.id, this.step.my_like_id)
         .subscribe(data => {
             if (!data.error) {
                 this.step.likers = data.likers;

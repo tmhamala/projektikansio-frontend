@@ -100,8 +100,6 @@ import { CommunicationService } from './communication.service';
 
 
  `,
-    providers: [],
-
 
 
 

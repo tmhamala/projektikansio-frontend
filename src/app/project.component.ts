@@ -1,9 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { DataService } from './data.service';
 import { CommunicationService } from './communication.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+
+
 
 @Component({
     selector: 'app-project-component',
@@ -12,7 +16,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
 
     tahtiarvostelu: number;
 
@@ -31,7 +35,8 @@ export class ProjectComponent implements OnInit {
     newStepImageAdded = false;
 
 
-
+    searchEventStream = new Subject<string>();
+    searchSubscription: Subscription;
 
 
     deleteProjectConfirm = false;
@@ -114,6 +119,7 @@ export class ProjectComponent implements OnInit {
         this.selectedStep = parametrit.stepId;
 
         this.getProjectData();
+        this.setSearchBoxSubscription();
 
 
     }
@@ -138,19 +144,33 @@ export class ProjectComponent implements OnInit {
                 this.project = data.projectdata;
                 this.communicationService.userData = data.userdata;
 
-                // // Haetaan lazy loading tyyliin kaikki askeleet
-                // credetentials.only_10_steps = false;
-                // this.dataService.get_project_data(credetentials)
-                //     .subscribe(alldata => {
-                //         this.project = alldata.projectdata;
-                //         this.communicationService.userData = alldata.userdata;
-                //     });
-
-
             });
 
     }
 
+
+
+    searchChanged(value: string) {
+        this.searchEventStream.next(value);
+    }
+
+
+
+
+    setSearchBoxSubscription() {
+
+        this.searchSubscription = this.searchEventStream.pipe(
+            filter(e => e.length > 1 || e.length === 0),
+            debounceTime(300),
+            distinctUntilChanged())
+            .subscribe({
+                next: searchTerm => {
+                    this.searchTerm = searchTerm;
+                    this.getProjectData();
+                }
+            });
+
+    }
 
 
 
@@ -218,33 +238,16 @@ export class ProjectComponent implements OnInit {
 
 
         const credetentials = {
-            user_id: this.communicationService.userData.user_id,
-
-            project_id: this.project.id,
-
-            project_name: this.project.name_edit,
-            project_description: this.project.description_edit,
-            project_goal: this.project.goal_edit,
-            project_step_goal: this.project.step_goal_edit,
-            project_numeric_goal: this.project.numeric_goal_edit,
-            project_numeric_goal_unit: this.project.numeric_goal_unit_edit,
-            project_step_ratings: this.project.step_ratings_edit,
-            project_status: this.project.status_edit,
-            project_likes_allowed: this.project.project_likes_allowed_edit,
-            project_step_likes_allowed: this.project.step_likes_allowed_edit,
-            project_step_comments_allowed: this.project.step_comments_allowed_edit,
+            project: this.project,
             project_coverphoto_data: coverPhotoData,
-            project_certificated: this.project.certificated_project_edit,
-            project_time_limit: this.project.time_limit_edit,
-            project_time_limit_days: this.project.time_limit_days_edit,
-            project_order_number: this.project.order_number_edit,
-            project_category: this.project.category_edit,
         };
 
 
         this.dataService.edit_project(credetentials, this.urlToken)
             .subscribe(data => {
-                this.getProjectData();
+                if (!data.error) {
+                    this.getProjectData();
+                }
             });
 
     }
@@ -257,17 +260,13 @@ export class ProjectComponent implements OnInit {
 
     add_like() {
 
-        const credetentials = {
-            user_id: this.communicationService.userData.user_id,
-            project_id: this.project.id,
-        };
-
         this.project.like_count = this.project.like_count + 1;
 
-        this.dataService.add_projectlike(credetentials)
+        this.dataService.add_projectlike(this.project.id)
             .subscribe(data => {
                 if (!data.error) {
                     this.project.likers = data.likers;
+                    this.project.my_like_id = data.my_like_id;
                 }
             });
 
@@ -277,14 +276,9 @@ export class ProjectComponent implements OnInit {
 
     remove_like() {
 
-        const credetentials = {
-            user_id: this.communicationService.userData.user_id,
-            project_id: this.project.id,
-        };
-
         this.project.like_count = this.project.like_count - 1;
 
-        this.dataService.remove_projectlike(credetentials)
+        this.dataService.remove_projectlike(this.project.id, this.project.my_like_id)
             .subscribe(data => {
                 if (!data.error) {
                     this.project.likers = data.likers;
@@ -344,6 +338,11 @@ export class ProjectComponent implements OnInit {
             data: { step_topic: data.step_topic, step_id: data.step_id, likers: data.likers },
         });
 
+    }
+
+
+    ngOnDestroy() {
+        this.searchSubscription.unsubscribe();
     }
 
 

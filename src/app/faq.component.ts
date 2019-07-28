@@ -1,7 +1,5 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component } from '@angular/core';
 import {DataService} from './data.service';
-import {CommunicationService} from './communication.service';
-import { Router } from '@angular/router';
 
 
 
@@ -187,7 +185,6 @@ template: `
 
 
  `,
-providers: [],
 
 
 
@@ -199,7 +196,7 @@ export class FAQComponent {
     messageSent = false;
 
 
-    constructor( private dataService: DataService, public communicationService: CommunicationService, private router: Router) {
+    constructor( private dataService: DataService) {
     }
 
 

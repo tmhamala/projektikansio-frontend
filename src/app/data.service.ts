@@ -108,7 +108,6 @@ export class DataService {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: 'Bearer ' + localStorage.auth_token });
         const options = { headers };
         return this.http.delete(this.baseurl + 'steps/' + stepId + '/stepcomments/' + commentId + '/', options);
-
     }
 
 
@@ -124,16 +123,16 @@ export class DataService {
     // PROJECT LIKES
 
 
-    add_projectlike(credetentials): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    add_projectlike(projectId): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: 'Bearer ' + localStorage.auth_token });
         const options = { headers };
-        return this.http.post(this.baseurl + 'add-projectlike/', credetentials, options);
+        return this.http.post(this.baseurl + 'projects/' + projectId + '/projectlikes/', null, options);
     }
 
-    remove_projectlike(credetentials): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    remove_projectlike(projectId, likeId): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: 'Bearer ' + localStorage.auth_token  });
         const options = { headers };
-        return this.http.post(this.baseurl + 'remove-projectlike/', credetentials, options);
+        return this.http.delete(this.baseurl + 'projects/' + projectId + '/projectlikes/' + likeId + '/', options);
     }
 
 
@@ -149,10 +148,10 @@ export class DataService {
     }
 
 
-    remove_steplike(credetentials): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    remove_steplike(stepId, likeId): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: 'Bearer ' + localStorage.auth_token });
         const options = { headers };
-        return this.http.post(this.baseurl + 'remove-steplike/', credetentials, options);
+        return this.http.delete(this.baseurl + 'steps/' + stepId + '/steplikes/' + likeId + '/', options);
     }
 
 

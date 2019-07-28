@@ -67,11 +67,6 @@ export class ProfileComponent implements OnInit {
 
 
 
-
-
-
-
-
     // called when slim has initialized
     slimInit(data: any, slim: any) {
         // slim instance reference
@@ -217,10 +212,14 @@ export class ProfileComponent implements OnInit {
 
         this.dataService.start_new_project(credetentials)
             .subscribe(data => {
-                this.get_profiledata();
-                this.addNewProjectDialog = false;
-                this.newProjectName = '';
-                this.newProjectDescription = '';
+
+                if (!data.error) {
+                    this.get_profiledata();
+                    this.addNewProjectDialog = false;
+                    this.newProjectName = '';
+                    this.newProjectDescription = '';
+                }
+
 
             });
 
