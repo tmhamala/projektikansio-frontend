@@ -361,7 +361,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     selector: 'pop-up-image-dialog',
     template: `
 
-      <img style="max-width: 100%" [src]="data.image_url">
+      <img style="width: 100%" [src]="data.imageUrl">
 
   `
 })
@@ -369,9 +369,6 @@ export class PopUpImageDialogComponent {
 
     constructor(public dataService: DataService, public dialogRef: MatDialogRef<PopUpImageDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
 
 }
 

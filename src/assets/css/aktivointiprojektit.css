@@ -292,11 +292,12 @@
 .mat-dialog-container {
   max-height: 85vh !important;
   border-radius: 6px !important;
+  padding: 5px !important;
 }
 
 
 .cdk-overlay-pane {
-	width: 600px;
+	width: 800px;
 	max-width: 95% !important;
 	
 }
