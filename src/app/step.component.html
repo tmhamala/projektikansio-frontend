@@ -20,13 +20,13 @@
 
         <div class="col-sm-8 col-xs-10">
 
-            <div *ngIf="step.like_count > 0 || step.comments.length > 0" class="well"
+            <div *ngIf="step.likers.length > 0 || step.comments.length > 0" class="well"
                 style="margin: 0; position: absolute; right: 0px; top: 5px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px; padding: 4px 4px 4px 4px;">
-                <h5 align="center"
-                    style="white-space: nowrap; margin-bottom: 3px; font-size: 13px; font-weight: 500 !important; font-family: 'Montserrat', sans-serif;">
+                <h5
+                    style="text-align: center; white-space: nowrap; margin-bottom: 3px; font-size: 13px; font-weight: 500 !important; font-family: 'Montserrat', sans-serif;">
                     <div style="margin-left: 3px; margin-right: 3px; display: inline-block;"
-                        *ngIf="step.like_count > 0"><i style="font-size: 12px; margin-top: 2px; color: #ff4081;"
-                            class="fa fa-heart-o"></i> {{ step.like_count }}</div>
+                        *ngIf="step.likers.length > 0"><i style="font-size: 12px; margin-top: 2px; color: #ff4081;"
+                            class="fa fa-heart-o"></i> {{ step.likers.length }}</div>
                     <div style="margin-left: 3px; margin-right: 3px; display: inline-block;"
                         *ngIf="step.comments.length > 0"><i style="font-size: 12px; margin-top: 2px; color: #2dc3e8;"
                             class="fa fa-comment-o"></i> {{step.comments.length}}</div>
@@ -55,7 +55,7 @@
             <img (click)="fullView = false" *ngIf="step.proof_s3_url"
                 style="width: 100%; border-radius: 5px; margin-top: 9px; margin-bottom: 9px;"
                 [src]="step.proof_s3_url" />
-            <p class="hidden-xs" align="center" style="color: #4374e0; cursor: pointer;"
+            <p class="hidden-xs" style="text-align: center; color: #4374e0; cursor: pointer;"
                 (click)="openImagePopUp.emit( step.proof_s3_url )">Näytä täysikokoisena</p>
         </div>
 
@@ -69,8 +69,8 @@
                     Suorite: <strong>{{ step.numeric_value }} {{ project.numeric_goal_unit }}</strong></h6>
 
                 <div *ngIf="project?.step_ratings && step.rating" class="col-sm-6 no-padding">
-                    <div class="well read-only-ratings" align="center"
-                        style="cursor: default !important; margin-bottom: 0px; margin-top: 5px; padding-top: 4px; padding-bottom: 1px; width: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
+                    <div class="well read-only-ratings"
+                        style="text-align: center; cursor: default !important; margin-bottom: 0px; margin-top: 5px; padding-top: 4px; padding-bottom: 1px; width: 120px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
 
                         <star-rating [readOnly]="true" [staticColor]="'positive'" [size]="'medium'"
                             [rating]="step.rating" [starType]="'svg'"></star-rating>
@@ -89,14 +89,14 @@
                 <div *ngIf="project?.step_likes_allowed" class="pull-right"
                     style="margin-bottom: 0px; margin-top: 0px; background-color:rgba(255, 255, 255, 0.5); border-radius: 10px;">
                     <p style="margin: 4px;  background-color:rgba(255, 255, 255, 0.5);"
-                        (click)="add_like(); step.step_liked = true"
-                        *ngIf="!step.step_liked && communicationService.userData && project?.project_owner_id != communicationService.userData.user_id"
+                        (click)="add_like();"
+                        *ngIf="!myLikeId && communicationService.userData && project?.project_owner_id != communicationService.userData.user_id"
                         class="btn btn-default  btn-circle btn-xs"><i
                             style="position: absolute; left: 5px; top: 8px; font-size: 18px;" class="fa fa-heart-o"></i>
                     </p>
                     <p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5);"
-                        (click)="remove_like(); step.step_liked = false;"
-                        *ngIf="step.step_liked && communicationService.userData && project?.project_owner_id != communicationService.userData.user_id"
+                        (click)="remove_like();"
+                        *ngIf="myLikeId && communicationService.userData && project?.project_owner_id != communicationService.userData.user_id"
                         class="btn btn-default  btn-circle btn-xs"><i
                             style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
                             class="fa fa-heart"></i></p>
@@ -105,13 +105,14 @@
                         class="btn btn-default  btn-circle btn-xs"><i
                             style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
                             class="fa fa-heart"></i></p>
-                    <h5 *ngIf="step.like_count"
+
+                    <h5 *ngIf="step.likers.length > 0"
                         (click)="openStepLikers.emit({'step_topic': step.topic, 'step_id': step.id, 'likers': step.likers})"
                         style="cursor: pointer; margin-right: 15px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; display: inline-block;">
-                        {{ step.like_count }}</h5>
-                    <h5 *ngIf="!step.like_count"
+                        {{ step.likers.length }}</h5>
+                    <h5 *ngIf="step.likers.length == 0"
                         style="margin-right: 15px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; display: inline-block;">
-                        {{ step.like_count }}</h5>
+                        {{ step.likers.length }}</h5>
                 </div>
             </div>
 
@@ -157,8 +158,8 @@
                     <div *ngIf="project.step_ratings" class="col-sm-6 no-padding">
 
                         <p style="margin-bottom: 4px">Arvostelu</p>
-                        <div class="well" align="center"
-                            style="margin-bottom: 10px; padding-top: 10px; padding-bottom: 7px; width: 200px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
+                        <div class="well"
+                            style="text-align: center; margin-bottom: 10px; padding-top: 10px; padding-bottom: 7px; width: 200px; background-color:rgba(255, 255, 255, 0.5); border-radius: 8px">
 
                             <star-rating (starClickChange)="step.rating_edit = $event.rating" [staticColor]="'positive'"
                                 [size]="'medium'" [rating]="0" [hoverEnabled]="true" [starType]="'svg'"></star-rating>

@@ -378,19 +378,20 @@ export class PopUpImageDialogComponent {
     selector: 'project-likers-dialog',
     template: `
 
-        <h3 style="width: 100%; margin-top: 0px; margin-bottom: 40px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif;" align="center">Projektista tykänneet</h3>
+        <div style="padding: 25px;">
+            <h3 style="width: 100%; margin-top: 0px; margin-bottom: 40px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif;" align="center">Projektista tykänneet</h3>
 
-        <div align="center">
-            <div (click)="onNoClick()" routerLink="/u/{{liker.liker_url_token}}" *ngFor="let liker of data.likers" style="cursor: pointer; outline: none; margin-bottom: 5px; width: 100%; background-color:rgba(0, 0, 0, 0.06); border-radius: 12px; padding: 10px;">
-                <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="liker.liker_avatar_s3_url" [src]="liker.liker_avatar_s3_url"/>
-                <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="!liker.liker_avatar_s3_url" src="assets/img/default.jpg"/>
+            <div align="center">
+                <div (click)="onNoClick()" routerLink="/u/{{liker.liker_url_token}}" *ngFor="let liker of data.likers" style="cursor: pointer; outline: none; margin-bottom: 5px; width: 100%; background-color:rgba(0, 0, 0, 0.06); border-radius: 12px; padding: 10px;">
+                    <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="liker.liker_avatar_s3_url" [src]="liker.liker_avatar_s3_url"/>
+                    <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="!liker.liker_avatar_s3_url" src="assets/img/default.jpg"/>
 
-                <h4 style="display:inline-block; margin-left: 20px; font-weight: 600 !important; font-family: 'Montserrat', sans-serif;">{{liker.liker_name}}</h4>
+                    <h4 style="display:inline-block; margin-left: 20px; font-weight: 600 !important; font-family: 'Montserrat', sans-serif;">{{liker.liker_name}}</h4>
+                </div>
             </div>
+
+            <h4 (click)="onNoClick()" style="max-width: 100%; margin-top: 40px; margin-bottom: 10px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; cursor: pointer;" align="right"><i style="font-size: 22px; margin-right: 6px;" class='fa fa-times'></i>Sulje</h4>
         </div>
-
-        <h4 (click)="onNoClick()" style="max-width: 100%; margin-top: 40px; margin-bottom: 10px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; cursor: pointer;" align="right"><i style="font-size: 22px; margin-right: 6px;" class='fa fa-times'></i>Sulje</h4>
-
     `
 })
 export class ProjectLikersDialogComponent {
@@ -411,19 +412,20 @@ export class ProjectLikersDialogComponent {
     selector: 'step-likers-dialog',
     template: `
 
-        <h3 style="max-width: 100%; margin-top: 0px; margin-bottom: 40px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif;" align="center">Askeleesta {{data.step_topic}} tykänneet</h3>
+        <div style="padding: 25px">
+            <h3 style="max-width: 100%; margin-top: 0px; margin-bottom: 40px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif;" align="center">Askeleesta {{data.step_topic}} tykänneet</h3>
 
-        <div align="center">
-            <div (click)="onNoClick()" routerLink="/u/{{liker.liker_url_token}}" *ngFor="let liker of data.likers" style="cursor: pointer; outline: none; width: 100%; margin-bottom: 5px; max-width: 100%; background-color:rgba(0, 0, 0, 0.06); border-radius: 12px; padding: 10px;">
-                <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="liker.liker_avatar_s3_url" [src]="liker.liker_avatar_s3_url"/>
-                <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="!liker.liker_avatar_s3_url" src="assets/img/default.jpg"/>
+            <div align="center">
+                <div (click)="onNoClick()" routerLink="/u/{{liker.liker_url_token}}" *ngFor="let liker of data.likers" style="cursor: pointer; outline: none; width: 100%; margin-bottom: 5px; max-width: 100%; background-color:rgba(0, 0, 0, 0.06); border-radius: 12px; padding: 10px;">
+                    <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="liker.liker_avatar_s3_url" [src]="liker.liker_avatar_s3_url"/>
+                    <img style="width: 50px; border: 2px dashed #2dc3e8;  border-radius: 50%;" *ngIf="!liker.liker_avatar_s3_url" src="assets/img/default.jpg"/>
 
-                <h4 style="display:inline-block; margin-left: 20px; font-weight: 600 !important; font-family: 'Montserrat', sans-serif;">{{liker.liker_name}}</h4>
+                    <h4 style="display:inline-block; margin-left: 20px; font-weight: 600 !important; font-family: 'Montserrat', sans-serif;">{{liker.liker_name}}</h4>
+                </div>
             </div>
+
+            <h4 (click)="onNoClick()" style="max-width: 100%; margin-top: 40px; margin-bottom: 10px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; cursor: pointer;" align="right"><i style="font-size: 22px; margin-right: 6px;" class='fa fa-times'></i>Sulje</h4>
         </div>
-
-        <h4 (click)="onNoClick()" style="max-width: 100%; margin-top: 40px; margin-bottom: 10px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; cursor: pointer;" align="right"><i style="font-size: 22px; margin-right: 6px;" class='fa fa-times'></i>Sulje</h4>
-
     `
 })
 export class StepLikersDialogComponent {

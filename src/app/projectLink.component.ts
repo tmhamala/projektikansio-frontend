@@ -15,8 +15,8 @@ import { Component, Input } from '@angular/core';
           <img *ngIf="!project.cover_photo_s3_url" style="position: absolute; top: 0; left: 0; bottom: 0; width: 100%" src="assets/img/cover-default.png"/>
       </div>
 
-      <img *ngIf="project.project_owner_avatar" style="position: absolute; left: 35%; transform:translateY(-50%); border: 2px dashed #2dc3e8; width: 30%; border-radius: 50%;" [src]="project.project_owner_avatar"/>
-      <img *ngIf="!project.project_owner_avatar" style="position: absolute; left: 35%; transform:translateY(-50%); border: 2px dashed #2dc3e8; width: 30%; border-radius: 50%;" src="assets/img/default.jpg"/>
+      <img *ngIf="project.project_owner_avatar" class="project-link-avatar"  [src]="project.project_owner_avatar"/>
+      <img *ngIf="!project.project_owner_avatar" class="project-link-avatar" src="assets/img/default.jpg"/>
 
       <div style="height: 15px; margin-top: 9px; margin-left: 9px; width: calc(35% - 18px); display: inline-block;">
           <div align="center">

@@ -7,9 +7,9 @@ import { CommunicationService } from './communication.service';
     template: `
 
     <div class="row" style="margin: 0">
-        <div class="col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+        <div class="col-xs-12 no-padding">
 
-            <div class="well navigation-bar" style="margin: auto; margin-top: 18px; margin-bottom: 18px; padding-bottom: 11px; z-index: 5; max-width: 1200px; background-color:rgba(255, 255, 255, 0.7);">
+            <div class="well navigation-bar default-data-container default-well" style="margin-top: 18px; margin-bottom: 18px; padding-bottom: 11px; min-height: 30px;">
 
                 <div style="text-align: center; display: inline-block; width: 100%;">
 

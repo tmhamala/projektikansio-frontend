@@ -1,4 +1,31 @@
 
+.project-link-avatar {
+	position: absolute;
+	left: 35%; 
+	transform:translateY(-50%);
+	border: 2px dashed #2dc3e8; 
+	width: 30%; 
+	border-radius: 50%;
+	
+}
+
+
+
+.question-subject {
+	text-align: center;
+	font-weight: 600 !important;
+	margin-bottom: 20px;
+}
+
+.question-answer {
+	text-align: center;
+}
+
+.completed-feature {
+	text-decoration: line-through;
+}
+
+
 
 .default-data-container {
 	margin: auto;

@@ -9,19 +9,13 @@ import { ActivatedRoute } from '@angular/router';
     template: `
 
 
-  <div style="default-data-container">
+  <div class="default-data-container">
 
+    <div *ngIf="user" class="col-md-12 col-xs-12 no-padding">
 
+      <div class="well default-well">
 
-
-    <div *ngIf="user" class="col-md-12 col-xs-12" style="padding-left: 0; padding-right: 0px;">
-
-
-
-
-      <div class="well" style="padding-bottom: 40px; z-index: 5; background-color:rgba(255, 255, 255, 0.7);">
-
-        <h3 align="center" style="margin-bottom: 30px;">Käyttäjä - {{user.username}}</h3>
+        <h3 style="text-align: center; margin-bottom: 30px;">Käyttäjä - {{user.username}}</h3>
 
         <div class="col-xs-12 col-sm-6">
           <div align="center" style="margin-bottom: 30px;">
@@ -47,8 +41,8 @@ import { ActivatedRoute } from '@angular/router';
 
 
 
-      <div class="well" style="min-height: 400px; z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 2%;">
-        <h3 style="margin-bottom: 40px;" align="center">Käyttäjän {{user.name}} projektit</h3>
+      <div class="well" style="min-height: 400px; z-index: 5; background-color:rgba(255, 255, 255, 0.5); border-radius: 10px;">
+        <h3 style="text-align: center; margin-bottom: 40px;">Käyttäjän {{user.name}} projektit</h3>
 
 
           <div *ngFor="let project of user.projects" class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
@@ -76,9 +70,7 @@ export class UserComponent implements OnInit {
 
     user: any;
 
-    constructor(public dataService: DataService, private route: ActivatedRoute) {
-
-    }
+    constructor(public dataService: DataService, private route: ActivatedRoute) { }
 
 
 
@@ -87,12 +79,11 @@ export class UserComponent implements OnInit {
 
         document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-        let parametrit;
-
         this.route.params
-            .subscribe(params => parametrit = params);
+            .subscribe(params => {
+                this.getUserData(params.url_token);
+            });
 
-        this.getUserData(parametrit.url_token);
     }
 
 
@@ -100,7 +91,13 @@ export class UserComponent implements OnInit {
     getUserData(urlToken: string) {
 
         this.dataService.get_user_data(urlToken)
-            .subscribe(data => this.user = data);
+            .subscribe(data => {
+
+                if (!data.error) {
+                    this.user = data;
+                }
+
+            });
 
     }
 

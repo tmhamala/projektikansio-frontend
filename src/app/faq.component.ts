@@ -3,7 +3,6 @@ import {DataService} from './data.service';
 
 
 
-
 @Component({
 
 
@@ -11,47 +10,47 @@ selector: 'app-faq-component',
 template: `
 
 
-    <div style="margin: auto; max-width:1200px; z-index: 100;">
+    <div class="default-data-container">
 
-        <div class="col-md-12 col-xs-12" style="padding-left: 0; padding-right: 0px;">
+        <div class="col-md-12 col-xs-12 no-padding">
 
-            <div class="well" style="min-height: 600px; z-index: 5; background-color:rgba(255, 255, 255, 0.7);">
+            <div class="well default-well">
 
-                <h3 align="center" style="margin-bottom: 50px;">Usein kysyttyjä kysymyksiä</h3>
+                <h3 style="text-align: center; margin-bottom: 50px;">Usein kysyttyjä kysymyksiä</h3>
 
                 <div class="col-xs-12">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 20px;">Mikä on Projektikansio.fi?</h4>
-                    <p align="center">Projektikansio.fi on palvelu, jossa käyttäjät voivat esitellä ja jakaa omia projektejaan. Palvelu on avoin kaikille.</p>
+                    <h4 class="question-subject">Mikä on Projektikansio.fi?</h4>
+                    <p class="question-answer">Projektikansio.fi on palvelu, jossa käyttäjät voivat esitellä ja jakaa omia projektejaan. Palvelu on avoin kaikille.</p>
                 </div>
 
                 <div class="col-xs-12" style="margin-top: 40px;">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 20px;">Minkälaiset projektit ovat sopivia Projektikansioon?</h4>
-                    <p align="center">Projektiksi sopii mikä tahansa tavoite, jonka saavuttamiseen tarvittavat toimenpiteet on jaettavissa pienempiin kokonaisuuksiin eli askeleihin. Projektin tyypillä ei ole väliä. Tärkeintä on, että sitoudut projektin suorittamiseen.<br><br> Projektit eivät kuitenkaan saa olla loukkaavia ja niiden tulee olla hyvän maun mukaisia. Jos projekteissa esiintyy tunnistettavasti muita henkilöitä, tulee kyseisiltä henkilöiltä olla lupa sisällön julkaisemiseen. Käyttäjä vastaa itse kaikesta palveluun lisäämästään sisällöstä. Ylläpitäjä varaa oikeuden poistaa kaiken sopimattoman sisällön palvelusta.</p>
-                </div>
-
-
-                <div class="col-xs-12" style="margin-top: 40px;">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 20px;">Minkälainen on hyvä tavoite projektille?</h4>
-                    <p align="center">Projektilla tulisi olla päätepiste, jossa voidaan todeta onko projekti onnistunut. Kannustamme asettamaan projektille sellaisen tavoitteen, joka on saavutettavissa. Täysin avoimet projektit, esimerkiksi sellaiset joissa on tavoitteena ylläpitää tiettyä päivittäistä tapaa, tulevat aina epäonnistumaan siihen vääjäämättömään ensimmäiseen kertaan kun päivittäisen askeleen ottaminen jää tekemättä. Sen takia kannustammekin asettamaan projektille päätepisteen muotoilemalla tavoitteen esimerkiksi muotoon "Ylläpidän päivittäistä tapaa X kahden kuukauden ajan". Kaksi kuukautta myöhemmin voidaan tällöin todeta onko projekti onnistunut vai ei. Tavoite voi tottakai elää ja muuttua projektin aikana.</p>
+                    <h4 class="question-subject">Minkälaiset projektit ovat sopivia Projektikansioon?</h4>
+                    <p class="question-answer">Projektiksi sopii mikä tahansa tavoite, jonka saavuttamiseen tarvittavat toimenpiteet on jaettavissa pienempiin kokonaisuuksiin eli askeleihin. Projektin tyypillä ei ole väliä. Tärkeintä on, että sitoudut projektin suorittamiseen.<br><br> Projektit eivät kuitenkaan saa olla loukkaavia ja niiden tulee olla hyvän maun mukaisia. Jos projekteissa esiintyy tunnistettavasti muita henkilöitä, tulee kyseisiltä henkilöiltä olla lupa sisällön julkaisemiseen. Käyttäjä vastaa itse kaikesta palveluun lisäämästään sisällöstä. Ylläpitäjä varaa oikeuden poistaa kaiken sopimattoman sisällön palvelusta.</p>
                 </div>
 
 
                 <div class="col-xs-12" style="margin-top: 40px;">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 20px;">Miksi tekisin projektin projektikansioon?</h4>
-                    <p align="center">Itselleen on helppo luvata asioita. Yhtä helppoa on antaa periksi tavotteistaan. Projektikansion tuoma pieni sosiaalinen paine motivoi projekteissa eteenpäin. Liian vakavamielisesti ei projekteihin kuitenkaan suhtauduta. Jos yksi projekti epäonnistuu, niin koko yhteisömme kannustaa siihen että seuraava on menestyksekäs!</p>
+                    <h4 class="question-subject">Minkälainen on hyvä tavoite projektille?</h4>
+                    <p class="question-answer">Projektilla tulisi olla päätepiste, jossa voidaan todeta onko projekti onnistunut. Kannustamme asettamaan projektille sellaisen tavoitteen, joka on saavutettavissa. Täysin avoimet projektit, esimerkiksi sellaiset joissa on tavoitteena ylläpitää tiettyä päivittäistä tapaa, tulevat aina epäonnistumaan siihen vääjäämättömään ensimmäiseen kertaan kun päivittäisen askeleen ottaminen jää tekemättä. Sen takia kannustammekin asettamaan projektille päätepisteen muotoilemalla tavoitteen esimerkiksi muotoon "Ylläpidän päivittäistä tapaa X kahden kuukauden ajan". Kaksi kuukautta myöhemmin voidaan tällöin todeta onko projekti onnistunut vai ei. Tavoite voi tottakai elää ja muuttua projektin aikana.</p>
+                </div>
+
+
+                <div class="col-xs-12" style="margin-top: 40px;">
+                    <h4 class="question-subject">Miksi tekisin projektin projektikansioon?</h4>
+                    <p class="question-answer">Itselleen on helppo luvata asioita. Yhtä helppoa on antaa periksi tavotteistaan. Projektikansion tuoma pieni sosiaalinen paine motivoi projekteissa eteenpäin. Liian vakavamielisesti ei projekteihin kuitenkaan suhtauduta. Jos yksi projekti epäonnistuu, niin koko yhteisömme kannustaa siihen että seuraava on menestyksekäs!</p>
                 </div>
 
 
 
                 <div class="col-xs-12" style="margin-top: 40px;">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 20px;">Voinko osallistua palvelun kehittämiseen?</h4>
-                    <p align="center">Tottakai. Jos sinulla on ajatus, siitä minkälaisia ominaisuuksia palvelu kaipaisi niin lähetä viestiä alla olevan kentän kautta ja pyrimme toteuttamaan toiveet parhaamme mukaan. Kaikki ominaisuustoiveet ja parannusehdotukset ovat tervetulleita.</p>
+                    <h4 class="question-subject">Voinko osallistua palvelun kehittämiseen?</h4>
+                    <p class="question-answer">Tottakai. Jos sinulla on ajatus, siitä minkälaisia ominaisuuksia palvelu kaipaisi niin lähetä viestiä alla olevan kentän kautta ja pyrimme toteuttamaan toiveet parhaamme mukaan. Kaikki ominaisuustoiveet ja parannusehdotukset ovat tervetulleita.</p>
                 </div>
 
 
                 <div class="col-xs-12" style="margin-top: 40px;">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 20px;">Minkälaisia uusia ominaisuuksia on odotettavissa?</h4>
-                    <p align="center">Alla on listaus ominaisuuksista, jotka ovat suunnitteilla palvelun parantamiseksi.</p>
+                    <h4 class="question-subject">Minkälaisia uusia ominaisuuksia on odotettavissa?</h4>
+                    <p class="question-answer">Alla on listaus ominaisuuksista, jotka ovat suunnitteilla palvelun parantamiseksi.</p>
 
 
                    <div class="col-xs-12">
@@ -67,13 +66,13 @@ template: `
                             <tbody>
 
                                 <tr>
-                                    <td style="text-decoration: line-through">Tykkäämisominaisuus projektin askelille.</td>
-                                    <td style="text-decoration: line-through">Korkea</td>
+                                    <td class="completed-feature">Tykkäämisominaisuus projektin askelille.</td>
+                                    <td class="completed-feature">Korkea</td>
                                 </tr>
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Projektin asettaminen 'valmis' ja 'keskeytynyt' tilaan. Projektien ryhmittely tilan perusteella.</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Korkea</div></td>
+                                    <td class="completed-feature">Projektin asettaminen 'valmis' ja 'keskeytynyt' tilaan. Projektien ryhmittely tilan perusteella.</td>
+                                    <td class="completed-feature">Korkea</td>
                                 </tr>
 
                                 <tr>
@@ -83,29 +82,29 @@ template: `
 
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Kaikille avoimet haasteet.</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Keskitaso</div></td>
+                                    <td class="completed-feature">Kaikille avoimet haasteet.</td>
+                                    <td class="completed-feature">Keskitaso</td>
                                 </tr>
 
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Tavoiteaikataulun asettaminen projektille sekä seuranta onko projekti aikataulussa.</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Keskitaso</div></td>
+                                    <td class="completed-feature">Tavoiteaikataulun asettaminen projektille sekä seuranta onko projekti aikataulussa.</td>
+                                    <td class="completed-feature">Keskitaso</td>
                                 </tr>
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Mahdollisuus vaihtaa projektin kansikuvaa.</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Keskitaso</div></td>
+                                    <td class="completed-feature">Mahdollisuus vaihtaa projektin kansikuvaa.</td>
+                                    <td class="completed-feature">Keskitaso</td>
                                 </tr>
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Huomiomerkinnät tapahtumista (notifications).</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Keskitaso</div></td>
+                                    <td class="completed-feature">Huomiomerkinnät tapahtumista (notifications).</td>
+                                    <td class="completed-feature">Keskitaso</td>
                                 </tr>
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Mahdollisuus vaihtaa käyttäjän salasana.</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Keskitaso</div></td>
+                                    <td class="completed-feature">Mahdollisuus vaihtaa käyttäjän salasana.</td>
+                                    <td class="completed-feature">Keskitaso</td>
                                 </tr>
 
 
@@ -115,8 +114,8 @@ template: `
                                 </tr>
 
                                 <tr>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Projektiaskelten kommentointimahdollisuus.</div></td>
-                                    <td><div style="text-decoration: line-through; display: inline-block;">Keskitaso</div></td>
+                                    <td class="completed-feature">Projektiaskelten kommentointimahdollisuus.</td>
+                                    <td class="completed-feature">Keskitaso</td>
                                 </tr>
 
 
@@ -132,7 +131,7 @@ template: `
 
 
                 <div class="col-xs-12" style="margin-top: 40px;">
-                    <h4 align="center" style="font-weight: 600 !important; margin-bottom: 40px;">Kuka palvelua ylläpitää?</h4>
+                    <h4 class="question-subject" style="margin-bottom: 40px;">Kuka palvelua ylläpitää?</h4>
 
                     <div class="col-md-1 hidden-xs">
                     </div>

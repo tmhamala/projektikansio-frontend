@@ -91,7 +91,7 @@ export class SignupComponent {
     ongoingPost = false;
 
 
-    constructor(private dataService: DataService, private communicationService: CommunicationService, private router: Router) { }
+    constructor(private dataService: DataService,  private router: Router) { }
 
 
 

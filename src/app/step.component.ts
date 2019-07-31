@@ -22,6 +22,8 @@ export class StepComponent implements OnInit {
 
     ongoingPost = false;
 
+    myLikeId = null;
+
     constructor(public dataService: DataService, public communicationService: CommunicationService) {}
 
 
@@ -31,9 +33,23 @@ export class StepComponent implements OnInit {
             this.fullView = true;
         }
 
+        this.check_if_liked();
+
     }
 
 
+
+    check_if_liked() {
+        if (this.communicationService.userData) {
+            const myLike = this.step.likers.find((like) => like.liker_id === this.communicationService.userData.user_id);
+
+            if (myLike) {
+                this.myLikeId = myLike.id;
+            } else {
+                this.myLikeId = null;
+            }
+        }
+    }
 
 
 
@@ -67,7 +83,10 @@ export class StepComponent implements OnInit {
 
         this.dataService.delete_step(stepId)
         .subscribe(data => {
-            this.refreshProjectData.emit();
+            if (!data.error) {
+                this.refreshProjectData.emit();
+            }
+
         });
 
     }
@@ -79,13 +98,11 @@ export class StepComponent implements OnInit {
 
     add_like() {
 
-        this.step.like_count = this.step.like_count + 1;
-
         this.dataService.add_steplike(this.step.id)
         .subscribe(data => {
             if (!data.error) {
                 this.step.likers = data.likers;
-                this.step.my_like_id = data.my_like_id;
+                this.check_if_liked();
             }
         });
 
@@ -96,12 +113,11 @@ export class StepComponent implements OnInit {
 
     remove_like() {
 
-        this.step.like_count = this.step.like_count - 1;
-
-        this.dataService.remove_steplike(this.step.id, this.step.my_like_id)
+        this.dataService.remove_steplike(this.step.id, this.myLikeId)
         .subscribe(data => {
             if (!data.error) {
                 this.step.likers = data.likers;
+                this.check_if_liked();
             }
         });
 

@@ -43,7 +43,7 @@ import { CommunicationService } from './communication.service';
                     </div>
 
                     <div style="display: inline-block; vertical-align: top; width: 16px);">
-                        <i *ngIf="communicationService.userData.user_id == comment.user_id || communicationService.userData.user_id == projectOwnerId" (click)="comment.delete_confirm = true;" style="font-size: 16px; color: red; margin-top: 2px; cursor: pointer;" class='pull-right fa fa-times'></i>
+                        <i *ngIf="communicationService.userData?.user_id == comment.user_id || communicationService.userData?.user_id == projectOwnerId" (click)="comment.delete_confirm = true;" style="font-size: 16px; color: red; margin-top: 2px; cursor: pointer;" class='pull-right fa fa-times'></i>
                      </div>
 
 
