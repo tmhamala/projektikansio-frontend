@@ -45,15 +45,15 @@
 
 
 					<p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5);"
-						(click)="add_like(); project.project_liked = true"
-						*ngIf="!project.project_liked && project.project_owner_id != communicationService.userData?.user_id && communicationService.userData"
+						(click)="add_like();"
+						*ngIf="!myLikeId && project.project_owner_id != communicationService.userData?.user_id && communicationService.userData"
 						class="btn btn-default  btn-circle btn-xs"><i
 							style="position: absolute; left: 5px; top: 8px; font-size: 18px;" class="fa fa-heart-o"></i>
 					</p>
 
 					<p style="margin: 4px; background-color:rgba(255, 255, 255, 0.5);"
-						(click)="remove_like(); project.project_liked = false;"
-						*ngIf="project.project_liked && project.project_owner_id != communicationService.userData?.user_id && communicationService.userData"
+						(click)="remove_like();"
+						*ngIf="myLikeId && project.project_owner_id != communicationService.userData?.user_id && communicationService.userData"
 						class="btn btn-default  btn-circle btn-xs"><i
 							style="position: absolute; left: 5px; top: 8px; font-size: 18px; color: #ff4081;"
 							class="fa fa-heart"></i>
@@ -69,7 +69,7 @@
 
 					<h5 (click)="openProjectLikersDialog(project.likers)"
 						style="cursor: pointer; position: absolute; left: 44px; top: 11px; font-weight: 700 !important; font-family: 'Montserrat', sans-serif; display: inline-block;">
-						{{ project.like_count }}
+						{{ project.likers.length }}
 					</h5>
 				</div>
 

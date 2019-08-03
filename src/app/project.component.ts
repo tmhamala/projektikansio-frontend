@@ -25,6 +25,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     stepsToShow = 10;
     searchTerm = '';
 
+    myLikeId = null;
+
     ongoingPost = false;
 
     urlToken: string;
@@ -126,7 +128,17 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
 
 
+    check_if_liked() {
+        if (this.communicationService.userData) {
+            const myLike = this.project.likers.find((like) => like.liker_id === this.communicationService.userData.user_id);
 
+            if (myLike) {
+                this.myLikeId = myLike.id;
+            } else {
+                this.myLikeId = null;
+            }
+        }
+    }
 
 
 
@@ -143,6 +155,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
             .subscribe(data => {
                 this.project = data.projectdata;
                 this.communicationService.userData = data.userdata;
+                this.check_if_liked();
 
             });
 
@@ -260,13 +273,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     add_like() {
 
-        this.project.like_count = this.project.like_count + 1;
 
         this.dataService.add_projectlike(this.project.id)
             .subscribe(data => {
                 if (!data.error) {
                     this.project.likers = data.likers;
-                    this.project.my_like_id = data.my_like_id;
+                    this.check_if_liked();
                 }
             });
 
@@ -276,12 +288,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     remove_like() {
 
-        this.project.like_count = this.project.like_count - 1;
 
-        this.dataService.remove_projectlike(this.project.id, this.project.my_like_id)
+        this.dataService.remove_projectlike(this.project.id, this.myLikeId)
             .subscribe(data => {
                 if (!data.error) {
                     this.project.likers = data.likers;
+                    this.check_if_liked();
                 }
             });
 
