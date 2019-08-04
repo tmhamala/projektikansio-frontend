@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { CommunicationService } from './communication.service';
-
+import * as moment from 'moment';
+import 'moment/locale/fi';
 
 
 @Component({
@@ -34,9 +35,9 @@ import { CommunicationService } from './communication.service';
                     </div>
 
                     <div style="display: inline-block; vertical-align: top; width: calc(100% - 90px);">
-                        <p style=" font-size: 14px; margin-left: 10px; display: inline-block; font-weight: 700 !important;">{{ comment.user_name }} <span class="hidden-sm hidden-md hidden-lg"> - {{ comment.date }}</span></p>
+                        <p style=" font-size: 14px; margin-left: 10px; display: inline-block; font-weight: 700 !important;">{{ comment.user_name }} <span class="hidden-sm hidden-md hidden-lg"> - {{ comment?.dateFromNowString }}</span></p>
 
-                        <p class="pull-right hidden-xs" style="vertical-align: top; font-size: 14px; margin-left: 10px; display: inline-block; font-weight: 700 !important;">{{ comment.date }}</p>
+                        <p class="pull-right hidden-xs" style="vertical-align: top; font-size: 14px; margin-left: 10px; display: inline-block; font-weight: 700 !important;">{{ comment?.dateFromNowString }}</p>
 
                         <div class="row"></div>
                         <p style="vertical-align: top; font-size: 14px; margin-left: 10px; display: inline-block;">{{ comment.comment }}</p>
@@ -104,7 +105,7 @@ import { CommunicationService } from './communication.service';
 
 
 })
-export class CommentSectionComponent {
+export class CommentSectionComponent implements OnInit {
 
 
     @Input() step: any;
@@ -118,6 +119,18 @@ export class CommentSectionComponent {
 
     constructor(public dataService: DataService, public communicationService: CommunicationService) { }
 
+
+
+    ngOnInit() {
+        this.makeDateStrings();
+    }
+
+
+    makeDateStrings() {
+        this.step.comments.forEach((comment) => {
+            comment.dateFromNowString = moment(comment.date).fromNow();
+        });
+    }
 
 
     sendComment() {
@@ -137,6 +150,7 @@ export class CommentSectionComponent {
                 if (!data.error) {
                     this.comment = '';
                     this.step.comments = data.comments;
+                    this.makeDateStrings();
                 }
 
 
@@ -160,8 +174,8 @@ export class CommentSectionComponent {
 
                 if (!data.error) {
                     this.step.comments = data.comments;
+                    this.makeDateStrings();
                 }
-
 
             });
 
